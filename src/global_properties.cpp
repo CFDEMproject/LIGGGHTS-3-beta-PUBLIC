@@ -26,10 +26,13 @@
 ------------------------------------------------------------------------- */
 #include "global_properties.h"
 #include <cmath>
+#include <cstring>
 #include "update.h"
 #include "error.h"
 #include "neighbor.h"
 #include "force.h"
+
+using namespace std;
 
 namespace MODEL_PARAMS
 {
