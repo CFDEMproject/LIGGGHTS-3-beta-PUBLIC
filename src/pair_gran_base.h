@@ -34,9 +34,24 @@
 #include <malloc.h>
 
 #if defined(_WIN32) || defined(_WIN64)
-static inline void * memalign(size_t alignment, size_t size) 
+static inline void * aligned_malloc(size_t alignment, size_t size)
 {
   return _aligned_malloc(size, alignment);
+}
+
+static inline void aligned_free(void * ptr)
+{
+  _aligned_free(ptr);
+}
+#else
+static inline void * aligned_malloc(size_t alignment, size_t size)
+{
+  return memalign(alignment, size);
+}
+
+static inline void aligned_free(void * ptr)
+{
+  free(ptr);
 }
 #endif
 
@@ -65,16 +80,16 @@ protected:
 
 public:
   PairGranBase(class LAMMPS * lmp) : PairGran(lmp),
-    aligned_cdata((CollisionData*)memalign(32, sizeof(CollisionData))),
-    aligned_i_forces((ForceData*)memalign(32, sizeof(ForceData))),
-    aligned_j_forces((ForceData*)memalign(32, sizeof(ForceData))),
+    aligned_cdata((CollisionData*)aligned_malloc(32, sizeof(CollisionData))),
+    aligned_i_forces((ForceData*)aligned_malloc(32, sizeof(ForceData))),
+    aligned_j_forces((ForceData*)aligned_malloc(32, sizeof(ForceData))),
     hsetup(this), cmodel(lmp, &hsetup) {
   }
 
   virtual ~PairGranBase() {
-    free(aligned_cdata);
-    free(aligned_i_forces);
-    free(aligned_j_forces);
+    aligned_free(aligned_cdata);
+    aligned_free(aligned_i_forces);
+    aligned_free(aligned_j_forces);
   }
 
   virtual void settings(int nargs, char ** args) {
