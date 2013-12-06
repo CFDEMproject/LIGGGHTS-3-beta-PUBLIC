@@ -38,6 +38,8 @@ struct ContactData {
   double rsq;
   double delta[3];
 
+  double area_ratio;
+
   int * touch;
   double * contact_history;
 
@@ -45,6 +47,9 @@ struct ContactData {
   int j;
 
   bool is_wall;
+  bool has_force_update;
+
+  ContactData() : area_ratio(1.0) {}
 };
 
 struct CollisionData: ContactData {
@@ -79,15 +84,13 @@ struct CollisionData: ContactData {
   double mi;
   double mj;
   double meff;
-
-  double area_ratio;
   
   int computeflag;
   int shearupdate;
   int itype;
   int jtype;
 
-  CollisionData() : Fn(0.0), Ft(0.0), area_ratio(1.0) {}
+  CollisionData() : Fn(0.0), Ft(0.0) {}
 };
 
 struct ForceData {
@@ -134,5 +137,6 @@ namespace LAMMPS_NS {
     }
   };
 }
+
 
 #endif /* CONTACT_INTERFACE_H_ */

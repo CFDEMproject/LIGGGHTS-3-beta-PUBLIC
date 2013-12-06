@@ -239,6 +239,15 @@ public:
 
           cmodel.collision(cdata, i_forces, j_forces);
 
+          // if there is a collision, there will always be a force
+          cdata.has_force_update = true;
+        } else {
+          // apply force update only if selected contact models have requested it
+          cdata.has_force_update = false;
+          cmodel.noCollision(cdata, i_forces, j_forces);
+        }
+
+        if(cdata.has_force_update) {
           if (computeflag) {
             force_update(f[i], torque[i], i_forces);
 
@@ -252,8 +261,6 @@ public:
 
           if (evflag)
             Pair::ev_tally_xyz(i, j, nlocal, newton_pair, 0.0, 0.0,i_forces.delta_F[0],i_forces.delta_F[1],i_forces.delta_F[2],cdata.delta[0],cdata.delta[1],cdata.delta[2]);
-        } else {
-          cmodel.noCollision(cdata, i_forces, j_forces);
         }
       }
     }
