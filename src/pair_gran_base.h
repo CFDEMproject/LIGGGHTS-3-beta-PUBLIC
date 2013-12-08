@@ -201,6 +201,9 @@ public:
         cdata.touch = touch ? &touch[jj] : NULL;
         cdata.contact_history = allshear ? &allshear[dnum*jj] : NULL;
 
+        i_forces.reset();
+        j_forces.reset();
+
         if (rsq < radsum * radsum) {
           const double r = sqrt(rsq);
           const double rinv = 1.0 / r;

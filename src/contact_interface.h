@@ -99,6 +99,10 @@ struct ForceData {
 
   ForceData() 
   {
+    reset();
+  }
+
+  inline void reset() {
     delta_F[0] = 0.0;
     delta_F[1] = 0.0;
     delta_F[2] = 0.0;
