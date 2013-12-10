@@ -27,6 +27,7 @@
 #include "global_properties.h"
 #include <cmath>
 #include <cstring>
+#include <algorithm>
 #include "update.h"
 #include "error.h"
 #include "neighbor.h"
